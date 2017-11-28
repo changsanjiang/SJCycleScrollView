@@ -14,13 +14,10 @@
 		774962261FCBEFFB00F7CF10 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 774962241FCBEFFB00F7CF10 /* LaunchScreen.storyboard */; };
 		774962291FCBEFFB00F7CF10 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 774962281FCBEFFB00F7CF10 /* main.m */; };
 		774962351FCBF11E00F7CF10 /* SJCycleScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 774962341FCBF11E00F7CF10 /* SJCycleScrollView.m */; };
-		774962381FCBF17800F7CF10 /* SJPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 774962371FCBF17800F7CF10 /* SJPageControl.m */; };
 		7749624F1FCBFC1C00F7CF10 /* SJCycleCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7749624E1FCBFC1C00F7CF10 /* SJCycleCollectionViewCell.m */; };
 		774962551FCBFDDA00F7CF10 /* SJCycleCollectionCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 774962541FCBFDDA00F7CF10 /* SJCycleCollectionCellModel.m */; };
 		774962591FCC00F800F7CF10 /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 774962581FCC00F800F7CF10 /* placeholder.png */; };
-		7749625C1FCC23F200F7CF10 /* SJPageIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7749625B1FCC23F200F7CF10 /* SJPageIndicator.m */; };
-		774962651FCC43C100F7CF10 /* SJPageIndicatorSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 774962641FCC43C100F7CF10 /* SJPageIndicatorSetting.m */; };
-		774962681FCC44C300F7CF10 /* SJPageIndicatorModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 774962671FCC44C300F7CF10 /* SJPageIndicatorModel.m */; };
+		77F0E3791FCD7D0800320E5A /* LWZCycleEmbedCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77F0E3781FCD7D0800320E5A /* LWZCycleEmbedCollectionViewCell.m */; };
 		85FD79BE752FFD6C4068DC95 /* libPods-SJCycleScrollView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BE725312CD568DDA9F544CF /* libPods-SJCycleScrollView.a */; };
 /* End PBXBuildFile section */
 
@@ -38,19 +35,13 @@
 		774962281FCBEFFB00F7CF10 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		774962331FCBF11E00F7CF10 /* SJCycleScrollView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SJCycleScrollView.h; sourceTree = "<group>"; };
 		774962341FCBF11E00F7CF10 /* SJCycleScrollView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SJCycleScrollView.m; sourceTree = "<group>"; };
-		774962361FCBF17800F7CF10 /* SJPageControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SJPageControl.h; sourceTree = "<group>"; };
-		774962371FCBF17800F7CF10 /* SJPageControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SJPageControl.m; sourceTree = "<group>"; };
 		7749624D1FCBFC1C00F7CF10 /* SJCycleCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SJCycleCollectionViewCell.h; sourceTree = "<group>"; };
 		7749624E1FCBFC1C00F7CF10 /* SJCycleCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SJCycleCollectionViewCell.m; sourceTree = "<group>"; };
 		774962531FCBFDDA00F7CF10 /* SJCycleCollectionCellModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SJCycleCollectionCellModel.h; sourceTree = "<group>"; };
 		774962541FCBFDDA00F7CF10 /* SJCycleCollectionCellModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SJCycleCollectionCellModel.m; sourceTree = "<group>"; };
 		774962581FCC00F800F7CF10 /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
-		7749625A1FCC23F200F7CF10 /* SJPageIndicator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SJPageIndicator.h; sourceTree = "<group>"; };
-		7749625B1FCC23F200F7CF10 /* SJPageIndicator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SJPageIndicator.m; sourceTree = "<group>"; };
-		774962631FCC43C100F7CF10 /* SJPageIndicatorSetting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SJPageIndicatorSetting.h; sourceTree = "<group>"; };
-		774962641FCC43C100F7CF10 /* SJPageIndicatorSetting.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SJPageIndicatorSetting.m; sourceTree = "<group>"; };
-		774962661FCC44C300F7CF10 /* SJPageIndicatorModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SJPageIndicatorModel.h; sourceTree = "<group>"; };
-		774962671FCC44C300F7CF10 /* SJPageIndicatorModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SJPageIndicatorModel.m; sourceTree = "<group>"; };
+		77F0E3771FCD7D0800320E5A /* LWZCycleEmbedCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LWZCycleEmbedCollectionViewCell.h; sourceTree = "<group>"; };
+		77F0E3781FCD7D0800320E5A /* LWZCycleEmbedCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LWZCycleEmbedCollectionViewCell.m; sourceTree = "<group>"; };
 		8AC511A229071C4A5087EA27 /* Pods-SJCycleScrollView.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SJCycleScrollView.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SJCycleScrollView/Pods-SJCycleScrollView.debug.xcconfig"; sourceTree = "<group>"; };
 		E04096CCA6BD1E38C10D0585 /* Pods-SJCycleScrollView.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SJCycleScrollView.release.xcconfig"; path = "Pods/Target Support Files/Pods-SJCycleScrollView/Pods-SJCycleScrollView.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -125,18 +116,12 @@
 			children = (
 				774962331FCBF11E00F7CF10 /* SJCycleScrollView.h */,
 				774962341FCBF11E00F7CF10 /* SJCycleScrollView.m */,
+				77F0E3771FCD7D0800320E5A /* LWZCycleEmbedCollectionViewCell.h */,
+				77F0E3781FCD7D0800320E5A /* LWZCycleEmbedCollectionViewCell.m */,
 				774962531FCBFDDA00F7CF10 /* SJCycleCollectionCellModel.h */,
 				774962541FCBFDDA00F7CF10 /* SJCycleCollectionCellModel.m */,
 				7749624D1FCBFC1C00F7CF10 /* SJCycleCollectionViewCell.h */,
 				7749624E1FCBFC1C00F7CF10 /* SJCycleCollectionViewCell.m */,
-				774962661FCC44C300F7CF10 /* SJPageIndicatorModel.h */,
-				774962671FCC44C300F7CF10 /* SJPageIndicatorModel.m */,
-				774962361FCBF17800F7CF10 /* SJPageControl.h */,
-				774962371FCBF17800F7CF10 /* SJPageControl.m */,
-				774962631FCC43C100F7CF10 /* SJPageIndicatorSetting.h */,
-				774962641FCC43C100F7CF10 /* SJPageIndicatorSetting.m */,
-				7749625A1FCC23F200F7CF10 /* SJPageIndicator.h */,
-				7749625B1FCC23F200F7CF10 /* SJPageIndicator.m */,
 			);
 			name = Classes;
 			path = ../../Classes;
@@ -269,14 +254,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				7749624F1FCBFC1C00F7CF10 /* SJCycleCollectionViewCell.m in Sources */,
+				77F0E3791FCD7D0800320E5A /* LWZCycleEmbedCollectionViewCell.m in Sources */,
 				7749621E1FCBEFFB00F7CF10 /* ViewController.m in Sources */,
 				774962351FCBF11E00F7CF10 /* SJCycleScrollView.m in Sources */,
-				7749625C1FCC23F200F7CF10 /* SJPageIndicator.m in Sources */,
-				774962651FCC43C100F7CF10 /* SJPageIndicatorSetting.m in Sources */,
 				774962291FCBEFFB00F7CF10 /* main.m in Sources */,
 				774962551FCBFDDA00F7CF10 /* SJCycleCollectionCellModel.m in Sources */,
-				774962681FCC44C300F7CF10 /* SJPageIndicatorModel.m in Sources */,
-				774962381FCBF17800F7CF10 /* SJPageControl.m in Sources */,
 				7749621B1FCBEFFB00F7CF10 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

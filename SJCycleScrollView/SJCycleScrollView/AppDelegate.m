@@ -16,6 +16,13 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    _window = [UIWindow new];
+    _window.backgroundColor = [UIColor whiteColor];
+    
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    _window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[sb instantiateInitialViewController]];
+    [_window makeKeyAndVisible];
     // Override point for customization after application launch.
     return YES;
 }

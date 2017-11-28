@@ -10,15 +10,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSNotificationName const SJPageIndicatorSelectedNotification;
-
 @interface SJPageIndicatorSetting : NSObject
 
 /// default is gray.
-@property (nonatomic, strong, nullable) UIColor *pageIndicatorTintColor;
+@property (nonatomic, strong) UIColor *pageIndicatorTintColor;
 
 /// default is white.
-@property (nonatomic, strong, nullable) UIColor *currentPageIndicatorTintColor;
+@property (nonatomic, strong) UIColor *currentPageIndicatorTintColor;
 
 /// default is nil.
 @property (nonatomic, strong, nullable) UIImage *pageIndicatorImage;
@@ -29,15 +27,8 @@ extern NSNotificationName const SJPageIndicatorSelectedNotification;
 /// default is [5, 5]
 @property (nonatomic) CGSize pageIndicatorSize;
 
-#pragma mark -
-//@property (nonatomic, assign, getter=isSelected) BOOL selected;
-//- (void)setIsSelected:(BOOL)selected;
-
-- (UIColor * __nonnull)pageIndicatorTintColor;
-- (UIColor * __nonnull)currentPageIndicatorTintColor;
-- (UIImage * __nullable)pageIndicatorImage;
-- (UIImage * __nullable)currentPageIndicatorImage;
-- (CGSize)pageIndicatorSize;
+/// default use pageIndicatorSize.
+@property (nonatomic) CGSize currenPageIndicatorSize;
 
 @end
 

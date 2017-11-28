@@ -8,17 +8,44 @@
 
 #import "SJCycleScrollView.h"
 #import <Masonry/Masonry.h>
-#import "SJPageControl.h"
+#import <SJPageControl/SJPageControlHeader.h>
 #import <SJUIFactory/SJUIFactoryHeader.h>
 #import "SJCycleCollectionCellModel.h"
 
+@interface NSTimer (SJCycleAdd)
+
++ (instancetype)csj_scheduledTimerWithTimeInterval:(NSTimeInterval)ti exeBlock:(void(^)(NSTimer *timer))block repeats:(BOOL)yesOrNo;
+
+@end
+
+@implementation NSTimer (SJCycleAdd)
+
++ (instancetype)csj_scheduledTimerWithTimeInterval:(NSTimeInterval)ti exeBlock:(void(^)(NSTimer *timer))block repeats:(BOOL)yesOrNo {
+    NSAssert(block, @"block 不可为空");
+    return [self scheduledTimerWithTimeInterval:ti target:self selector:@selector(csj_exeTimerEvent:) userInfo:[block copy] repeats:yesOrNo];
+}
+
++ (void)csj_exeTimerEvent:(NSTimer *)timer {
+    void(^block)(NSTimer *timer) = timer.userInfo;
+    if ( block ) block(timer);
+}
+
+@end
+
+
+#pragma mark -
+
 static NSString *const SJCycleCollectionViewCellID = @"SJCycleCollectionViewCell";
 
-@interface SJCycleScrollView ()<UICollectionViewDelegate, UICollectionViewDataSource>
+static NSString *const LWZCycleEmbedCollectionViewCellID = @"LWZCycleEmbedCollectionViewCell";
+
+@interface SJCycleScrollView ()<UICollectionViewDelegate, UICollectionViewDataSource> {
+    NSTimer *_autoScrollTimer;
+}
 
 @property (nonatomic, strong, readonly) UIView *contentView;
 @property (nonatomic, strong, readonly) UICollectionView *collectionView;
-@property (nonatomic, strong, readonly) SJPageControl *pageControl;
+@property (nonatomic, strong, readonly) UIImageView *placeholderImageView;
 
 @end
 
@@ -32,17 +59,74 @@ static NSString *const SJCycleCollectionViewCellID = @"SJCycleCollectionViewCell
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if ( !self ) return nil;
+    _autoScroll = YES;
+    _scrollInterval = 4;
+    _imageViewContentMode = UIViewContentModeScaleAspectFill;
     [self _cycleSetupView];
     return self;
 }
 
+- (void)dealloc {
+    NSLog(@"%zd - %s", __LINE__, __func__);
+    [self _clearAutoScrollTimer];
+}
+
 - (void)setModels:(NSArray<SJCycleCollectionCellModel *> *)models {
     _models = models;
-    [_collectionView reloadData];
-    [_pageControl clean];
+    [self _clearAutoScrollTimer];
+    if ( _autoScroll ) [self _startAutoScroll];
+    self.placeholderImageView.hidden = 0 != models.count;
+    
     [models enumerateObjectsUsingBlock:^(SJCycleCollectionCellModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        [_pageControl addAnIndicator:obj.pageIndicatorModel];
+        if ( !obj.contentMode ) obj.contentMode = @(_imageViewContentMode);
+        if ( obj.URLStr && !obj.placeholderImage ) obj.placeholderImage = _placeholderImage;
     }];
+    [_collectionView reloadData];
+    _pageControl.numberOfPages = models.count;
+}
+
+- (void)setPlaceholderImage:(UIImage *)placeholderImage {
+    if ( placeholderImage == _placeholderImage ) return;
+    _placeholderImage = placeholderImage;
+    _placeholderImageView.image = placeholderImage;
+}
+
+- (void)setAutoScroll:(BOOL)autoScroll {
+    if ( autoScroll == _autoScroll ) return;
+    _autoScroll = autoScroll;
+    if ( _autoScroll ) [self _startAutoScroll];
+    else [self _clearAutoScrollTimer];
+}
+
+- (void)setScrollInterval:(NSTimeInterval)scrollInterval {
+    if ( scrollInterval == _scrollInterval ) return;
+    _scrollInterval = scrollInterval;
+    if ( _autoScroll ) [self _startAutoScroll];
+}
+
+- (void)setPageAlign:(SJCycleScrollPageAlignment)pageAlign {
+    if ( pageAlign == _pageAlign ) return;
+    _pageAlign = pageAlign;
+    switch (pageAlign) {
+        case SJCycleScrollPageAlignmentTrailing: {
+            [_pageControl mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.bottom.trailing.offset(0);
+            }];
+        }
+            break;
+        case SJCycleScrollPageAlignmentCenter: {
+            [_pageControl mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.centerX.bottom.offset(0);
+            }];
+        }
+            break;
+        case SJCycleScrollPageAlignmentLeading: {
+            [_pageControl mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.leading.bottom.offset(0);
+            }];
+        }
+            break;
+    }
 }
 
 #pragma mark - Setup Views
@@ -53,15 +137,15 @@ static NSString *const SJCycleCollectionViewCellID = @"SJCycleCollectionViewCell
     [_contentView addSubview:self.pageControl];
     
     [_contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(_contentView.superview);
+        make.edges.offset(0);
     }];
     
     [_placeholderImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(_placeholderImageView.superview);
+        make.edges.offset(0);
     }];
     
     [_collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(_collectionView.superview);
+        make.edges.offset(0);
     }];
     
     [_pageControl mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -71,7 +155,7 @@ static NSString *const SJCycleCollectionViewCellID = @"SJCycleCollectionViewCell
 
 - (UIImageView *)placeholderImageView {
     if ( _placeholderImageView ) return _placeholderImageView;
-    _placeholderImageView = [SJUIFactory imageViewWithImageName:@"" viewMode:UIViewContentModeScaleAspectFill];
+    _placeholderImageView = [SJUIFactory imageViewWithImageName:@"" viewMode:_imageViewContentMode];
     return _placeholderImageView;
 }
 
@@ -87,12 +171,6 @@ static NSString *const SJCycleCollectionViewCellID = @"SJCycleCollectionViewCell
     return _contentView;
 }
 
-//- (void)_shadowWithView:(UIView *)view {
-//    view.layer.shadowOffset = CGSizeMake(0, 1);
-//    view.layer.shadowColor = [UIColor colorWithWhite:0 alpha:0.1].CGColor;
-//    view.layer.shadowOpacity = 1;
-//}
-
 #pragma mark
 - (UICollectionView *)collectionView {
     if ( _collectionView ) return _collectionView;
@@ -103,8 +181,34 @@ static NSString *const SJCycleCollectionViewCellID = @"SJCycleCollectionViewCell
         _collectionView.dataSource = self;
     _collectionView.backgroundColor = [UIColor clearColor];
     _collectionView.pagingEnabled = YES;
+    _collectionView.showsVerticalScrollIndicator = NO;
+    _collectionView.showsHorizontalScrollIndicator = NO;
     [_collectionView registerClass:NSClassFromString(SJCycleCollectionViewCellID) forCellWithReuseIdentifier:SJCycleCollectionViewCellID];
+    [_collectionView registerClass:NSClassFromString(LWZCycleEmbedCollectionViewCellID) forCellWithReuseIdentifier:LWZCycleEmbedCollectionViewCellID];
     return _collectionView;
+}
+
+- (void)_startAutoScroll {
+    __weak typeof(self) _self = self;
+    _autoScrollTimer = [NSTimer csj_scheduledTimerWithTimeInterval:_scrollInterval exeBlock:^(NSTimer *timer) {
+        __strong typeof(_self) self = _self;
+        if ( !self ) return;
+        [self.collectionView setContentOffset:CGPointMake(ceil(self.collectionView.contentOffset.x / self.collectionView.csj_w + 1) * self.collectionView.csj_w, 0) animated:YES];
+    } repeats:YES];
+    _autoScrollTimer.fireDate = [NSDate dateWithTimeIntervalSinceNow:_scrollInterval];
+}
+
+- (void)_clearAutoScrollTimer {
+    [_autoScrollTimer invalidate];
+    _autoScrollTimer = nil;
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    [self _clearAutoScrollTimer];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if ( _autoScroll ) [self _startAutoScroll];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -121,22 +225,22 @@ static NSString *const SJCycleCollectionViewCellID = @"SJCycleCollectionViewCell
         _collectionView.contentOffset = CGPointMake(((items / _models.count / 2) * _models.count - 1) * _collectionView.csj_w, 0);
     }
     
-    _pageControl.currentPage = (NSInteger)(_collectionView.contentOffset.x / _collectionView.csj_w) % _models.count;
+    _pageControl.currentPage = i_offset_x % _models.count;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return _models.count * 3;
+    return _models.count * 50;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:SJCycleCollectionViewCellID forIndexPath:indexPath];
-    [cell setValue:_models[indexPath.row % _models.count] forKey:@"model"];
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:LWZCycleEmbedCollectionViewCellID forIndexPath:indexPath];
+    [cell setValue:_models[indexPath.item % _models.count] forKey:@"model"];
     return cell;
 }
 
 #pragma mark
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return CGSizeMake(self.csj_w, self.csj_w * 9.0f / 16.0);
+    return self.csj_size;
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
@@ -151,4 +255,10 @@ static NSString *const SJCycleCollectionViewCellID = @"SJCycleCollectionViewCell
     return 0;
 }
 
+#pragma mark
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    if ( [self.delegate respondsToSelector:@selector(cycleScrollView:didSelectItemAtIndex:)] ) {
+        [self.delegate cycleScrollView:self didSelectItemAtIndex:indexPath.item % _models.count];
+    }
+}
 @end

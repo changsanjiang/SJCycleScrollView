@@ -13,5 +13,6 @@
 @interface SJCycleCollectionViewCell : UICollectionViewCell
 
 @property (nonatomic, strong, readwrite) SJCycleCollectionCellModel *model;
+@property (nonatomic, strong, readonly) UIImageView *contentImageView;
 
 @end

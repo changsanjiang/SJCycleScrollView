@@ -10,13 +10,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class SJPageIndicatorModel;
+@class SJPageIndicatorSetting;
 
-@interface SJPageIndicator : UIButton
+@interface SJPageIndicator : UIControl
 
-@property (nonatomic, strong, readwrite) SJPageIndicatorModel *model;
+@property (nonatomic, strong, readwrite) SJPageIndicatorSetting *setting;
 
-- (void)update;
+@property (nonatomic, getter=isCurrentPage) BOOL currentPage;
 
 @end
 

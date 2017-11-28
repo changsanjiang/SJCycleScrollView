@@ -8,16 +8,27 @@
 //
 
 #import "SJCycleCollectionCellModel.h"
-#import "SJPageIndicatorModel.h"
 
-@implementation SJCycleCollectionCellModel {
-     SJPageIndicatorModel *_pageIndicatorModel;
+@implementation SJCycleCollectionCellModel
+
+- (instancetype)initWithURLStr:(NSString *)URLStr {
+    return [self initWithURLStr:URLStr placeholderImage:nil contentMode:nil];
 }
 
-- (SJPageIndicatorModel *)pageIndicatorModel {
-    if ( _pageIndicatorModel ) return _pageIndicatorModel;
-    _pageIndicatorModel = [SJPageIndicatorModel new];
-    return _pageIndicatorModel;
+- (instancetype)initWithURLStr:(NSString *)URLStr placeholderImage:(UIImage * __nullable)placeholderImage contentMode:(NSNumber *)contentMode {
+    self = [super init];
+    if ( !self ) return nil;
+    _URLStr = URLStr;
+    _placeholderImage = placeholderImage;
+    _contentMode = contentMode;
+    return self;
 }
 
+- (instancetype)initWithImage:(UIImage *)image contentMode:(NSNumber *__nullable)contentMode {
+    self = [super init];
+    if ( !self ) return nil;
+    _image = image;
+    _contentMode = contentMode;
+    return self;
+}
 @end

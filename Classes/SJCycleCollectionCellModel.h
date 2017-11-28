@@ -8,13 +8,24 @@
 
 #import <UIKit/UIKit.h>
 
-@class SJPageIndicatorModel;
+NS_ASSUME_NONNULL_BEGIN
 
 @interface SJCycleCollectionCellModel : NSObject
 
-@property (nonatomic, strong) NSString *URLStr;
+// If nil, the cycleScrollView's contentMode will be used.
+@property (nonatomic, strong) NSNumber *contentMode; // UIViewContentMode
+
+// If nil, the cycleScrollView's placeholder will be used.
 @property (nonatomic, strong) UIImage *placeholderImage;
+
+@property (nonatomic, strong) NSString *URLStr;
+- (instancetype)initWithURLStr:(NSString *)URLStr;
+- (instancetype)initWithURLStr:(NSString *)URLStr placeholderImage:(UIImage * __nullable)placeholderImage contentMode:(NSNumber *__nullable)contentMode;
+
+
 @property (nonatomic, strong) UIImage *image;
-@property (nonatomic, strong, readonly) SJPageIndicatorModel *pageIndicatorModel;
+- (instancetype)initWithImage:(UIImage *)image contentMode:(NSNumber *__nullable)contentMode;
 
 @end
+
+NS_ASSUME_NONNULL_END

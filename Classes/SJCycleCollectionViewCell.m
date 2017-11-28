@@ -14,42 +14,38 @@
 #import <YYAnimatedImageView.h>
 
 @interface SJCycleCollectionViewCell ()
-
-@property (nonatomic, strong, readonly) YYAnimatedImageView *contentImageView;
-
+@property (nonatomic, strong) YYAnimatedImageView *contentImageView;
 @end
 
 @implementation SJCycleCollectionViewCell
-@synthesize contentImageView = _contentImageView;
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if ( !self ) return nil;
-    [self _cycleCollectionCellSetupView];
     return self;
 }
 
 - (void)setModel:(SJCycleCollectionCellModel *)model {
     _model = model;
     if ( model.image ) {
-        _contentImageView.image = model.image;
+        self.contentImageView.image = model.image;
     }
     else {
-        [_contentImageView setImageWithURL:[NSURL URLWithString:model.URLStr] placeholder:model.placeholderImage options:YYWebImageOptionShowNetworkActivity | YYWebImageOptionProgressiveBlur | YYWebImageOptionSetImageWithFadeAnimation completion:nil];
+        [self.contentImageView setImageWithURL:[NSURL URLWithString:model.URLStr] placeholder:model.placeholderImage options:YYWebImageOptionShowNetworkActivity | YYWebImageOptionProgressiveBlur | YYWebImageOptionSetImageWithFadeAnimation completion:nil];
     }
-}
 
-- (void)_cycleCollectionCellSetupView {
-    [self.contentView addSubview:self.contentImageView];
-    [_contentImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(_contentImageView.superview);
-    }];
+    self.contentImageView.contentMode = [model.contentMode integerValue];
 }
 
 - (YYAnimatedImageView *)contentImageView {
     if ( _contentImageView ) return _contentImageView;
     _contentImageView = [YYAnimatedImageView new];
     _contentImageView.contentMode = UIViewContentModeScaleAspectFill;
+    _contentImageView.clipsToBounds = YES;
+    [self.contentView insertSubview:_contentImageView atIndex:0];
+    [_contentImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(_contentImageView.superview);
+    }];
     return _contentImageView;
 }
 

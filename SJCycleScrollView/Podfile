@@ -9,4 +9,5 @@ target 'SJCycleScrollView' do
   pod 'Masonry'
   pod 'YYKit'
   pod 'SJUIFactory'
+  pod 'SJPageControl'
 end
